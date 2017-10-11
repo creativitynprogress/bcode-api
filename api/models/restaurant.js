@@ -26,7 +26,7 @@ const restaurantSchema = new Schema({
     socialCapital: {
         type: Number
     },
-    ticketTest: {
+    ticketText: {
         type: String
     },
     ownerId: {

@@ -19,7 +19,8 @@ function setOwnerInfo(owner) {
         maxSubsidiaries: owner.maxSubsidiaries,
         enable: owner.enable,
         subscription: owner.subscription,
-        corporate: owner.corporate
+        corporate: owner.corporate,
+        role: owner.role
     }
 
     return ownerInfo
@@ -51,7 +52,8 @@ async function register(req, res, next) {
             maxSubsidiaries: req.body.maxSubsidiaries,
             enable: req.body.enable,
             subscription: req.body.subscription,
-            password: req.body.passord,
+            password: req.body.password,
+            role: req.body.role || 'Owner',
             corporate: {
                 description: req.body.description,
                 address: req.body.address,

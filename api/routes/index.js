@@ -57,12 +57,13 @@ const require_auth = passport.authenticate('jwt', {
       const order_routes = express.Router()
 
       api_routes.use('/auth', auth_routes)
-      auth_routes.post('/login', require_login, authenticathion_controller.login)
       auth_routes.post('/register', upload_file.single('image'), authenticathion_controller.register)
+      auth_routes.post('/login', require_login, authenticathion_controller.login)
 
       api_routes.use('/restaurant', restaurant_routes)
       restaurant_routes.post('/', require_auth, upload_file.single('image'), restaurant_controller.restaurant_create)
       restaurant_routes.get('/', require_auth, restaurant_controller.restaurant_list)
+      restaurant_routes.put('/:restaurantId', require_auth, upload_file.single('image'), restaurant_controller.restaurant_update)
       restaurant_routes.get('/:restaurantId', require_auth, restaurant_controller.restaurant_details)
       restaurant_routes.delete('/:restaurantId', require_auth, restaurant_controller.restaurant_delete)
 
@@ -127,4 +128,5 @@ const require_auth = passport.authenticate('jwt', {
       ticket_routes.delete('/:ticketId/pay/:payId', require_auth, ticket_controller.ticket_delete_pay)
       ticket_routes.put('/cancel', require_auth, ticket_controller.ticket_cancel)
 
+      app.use('/api', api_routes)
   }

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const bcrypt = require('bcrypt-nodejs')
+const bcrypt = require('bcrypt')
 const Schema = mongoose.Schema
 
 const ownerSchema = new Schema({
@@ -29,41 +29,39 @@ const ownerSchema = new Schema({
     },
     subscription: {
         type: String,
-        enum: ['Survivor','Evolution']
-    }, 
+        enum: ['Survivor', 'Evolution']
+    },
     corporate: {
         name: String,
         description: String,
         address: String,
         image: String
+    },
+    role: {
+        type: String,
+        enum: ['Owner', 'Admin', 'Manager'],
+        default: 'Owner'
     }
 })
 
 ownerSchema.pre('save', function (next) {
-    const owner = this
     const SALT_FACTOR = 5
-  
+    const owner = this
+
     if (!owner.isModified('password')) return next()
-  
-    bcrypt.genSalt(SALT_FACTOR, function (err, salt) {
-      if (err) return next(err)
-  
-      bcrypt.hash(owner.password, salt, null, function (err, hash) {
-        if (err) return next(err)
-        owner.password = hash
-        next()
-      })
-    })
-  })
-  
-  //  Method to compare password for login
-  ownerSchema.methods.comparePassword = function (candidatePassword, cb) {
-    bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
-      if (err) {
-        return cb(err)
-      }
-      cb(null, isMatch)
-    })
-  }
-  
-  module.exports = mongoose.model('owner', ownerSchema)
+
+    console.log(owner)
+    const salt = bcrypt.genSaltSync(SALT_FACTOR)
+    const hash = bcrypt.hashSync(owner.password, salt)
+
+    owner.password = hash
+    next()
+})
+
+//  Method to compare password for login
+ownerSchema.methods.comparePassword = function (candidatePassword, cb) {
+    const isMatch = bcrypt.compareSync(candidatePassword, this.password)
+    cb(null, isMatch)
+}
+
+module.exports = mongoose.model('Owner', ownerSchema)

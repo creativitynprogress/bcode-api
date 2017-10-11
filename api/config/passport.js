@@ -7,17 +7,25 @@ const ExtractJwt = require('passport-jwt').ExtractJwt
 const LocalStrategy = require('passport-local')
 
 const localOptions = {
-  ownernameField: 'email',
+  usernameField: 'email',
   passwordField: 'password'
 }
 
 // Setting up local login Strategy
 const localLogin = new LocalStrategy(localOptions, function (email, password, done) {
-  Owner.findOne({ email: email }, function (err, owner) {
-    if (err) { return done(err) }
+  Owner.findOne({
+    email: email
+  }, function (err, owner) {
+    if (err) {
+      return done(err)
+    }
+
     if (!owner) {
-      Employee.findOne({ email: email }, (err, employee) => {
+      Employee.findOne({
+        email: email
+      }, (err, employee) => {
         if (err) return done(err)
+
         if (!employee) {
           return done(null, false, {
             error: 'Your login details could not be verified. Please try again.'
@@ -31,15 +39,16 @@ const localLogin = new LocalStrategy(localOptions, function (email, password, do
               error: 'Your login details could not be verified. Please try again.'
             })
           }
-
           return done(null, employee)
         })
       })
     } else {
       owner.comparePassword(password, function (err, isMatch) {
+        console.log(password, isMatch)
         if (err) {
           return done(err)
         }
+
         if (!isMatch) {
           return done(null, false, {
             error: 'Your login details could not be verified. Please try again.'
@@ -62,7 +71,9 @@ const jwtOptions = {
 
 const jwtLogin = new JwtStrategy(jwtOptions, (payload, done) => {
   Owner.findById(payload._id, (err, owner) => {
-    if (err) { return done(err, false) }
+    if (err) {
+      return done(err, false)
+    }
 
     if (owner) {
       done(null, owner)
@@ -73,7 +84,6 @@ const jwtLogin = new JwtStrategy(jwtOptions, (payload, done) => {
         }
 
         if (employee) {
-          console.log(employee)
           done(null, employee)
         } else {
           done(null, false)
