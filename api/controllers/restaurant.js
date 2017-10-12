@@ -39,7 +39,7 @@ async function restaurant_update(req, res, next) {
 
         if (req.body.image) {
             let fileName = Date.now()
-            let filepath = base64Img.imgSync(req.body.image, path.join('/home/gerson/bcode-api/public/images', 'restaurant'), fileName)
+            let filepath = base64Img.imgSync(req.body.image, path.join('/home/bcode/public/images', 'restaurant'), fileName)
             restaurant.image = '/images/restaurant/' + fileName + path.extname(filepath)
         }
 

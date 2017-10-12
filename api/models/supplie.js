@@ -6,7 +6,11 @@ const supplieSchema = new Schema({
         type: String
     },
     category: {
-        type: String
+        type: String,
+        enum: ['Frutas', 'Verduras', 'Aderezos', 'Aceites', 'Salsas', 'Bebidas alcoholicas', 'Bebidas no alcoholicas', 'Legumbres', 'Carnes', 'Aves de corral', 'Pescado', 'Frutos secos y semillas',
+            'Huevos', 'Granos enteros', 'Granos complejos', 'Pastas', 'Productos lácteos', "Insumos cocina", "Insumos baño", "Insumos limpieza", "Insumos de oficina", "Insumos comensales",
+            'Embutidos', 'Especias', 'Extras', 'Mariscos', 'Cereales', 'Insumos Barra', 'Panadería', 'Enlatados'
+        ]
     },
     quantity: {
         type: Number
@@ -15,10 +19,12 @@ const supplieSchema = new Schema({
         type: Number
     },
     unit: {
-        type: String
+        type: String,
+        enum: ['g', 'kg', 'ton', 'lb', 'ml', 'l', 'ga', 'oz', 'pza']
     },
     daysToBuy: {
-        type: String
+        type: String,
+        enum: ['N/A', 'Diario', 'Semanal', 'Quincenal', 'Mensual', 'Bimestral', 'Trimestral']
     },
     storageId: {
         type: Schema.Types.ObjectId,
