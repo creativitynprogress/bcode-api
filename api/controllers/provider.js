@@ -9,7 +9,7 @@ async function provider_create (req, res, next) {
         let provider = new Provider(req.body)
         provider.owner = owner._id
 
-        let provider = await provider.save()
+        provider = await provider.save()
 
         sendJSONresponse(res, 201, provider)
     } catch (e) {
@@ -62,7 +62,7 @@ async function provider_delete (req, res, next) {
     try {
         const providerId = req.params.providerId
 
-        let provider = Provider.findByIdAndRemove(providerId)
+        let provider = await Provider.findByIdAndRemove(providerId)
 
         sendJSONresponse(res, 203, provider)
     } catch (e) {
