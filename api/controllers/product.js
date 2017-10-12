@@ -1,6 +1,6 @@
 'use strict'
 
-const Product = require('../controllers/product')
+const Product = require('../models/product')
 const sendJSONresponse = require('./shared').sendJSONresponse
 
 async function product_create(req, res, next) {

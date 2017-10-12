@@ -26,7 +26,7 @@ const supplieSchema = new Schema({
         type: String,
         enum: ['N/A', 'Diario', 'Semanal', 'Quincenal', 'Mensual', 'Bimestral', 'Trimestral']
     },
-    storageId: {
+    storage: {
         type: Schema.Types.ObjectId,
         ref: 'Storage'
     },

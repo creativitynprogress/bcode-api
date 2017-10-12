@@ -9,6 +9,10 @@ const orderSchema = new Schema({
         type: String,
         enum: ['Pending', 'Process', 'Complete']
     },
+    time: {
+        type: String,
+        enum: ['first', 'second', 'third']
+    },
     ingredientsRemove: {
         type: [Schema.Types.ObjectId],
         ref: 'Supplie'
