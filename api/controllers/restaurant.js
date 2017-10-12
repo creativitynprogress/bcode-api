@@ -3,8 +3,8 @@
 const Restaurant = require('../models/restaurant')
 const Owner = require('../models/owner')
 const sendJSONresponse = require('./shared').sendJSONresponse
-const Buffer = require('buffer')
-const fs = require('fs')
+const base64Img = require('base64-img')
+const path = require('path')
 
 async function restaurant_create(req, res, next) {
     try {
@@ -35,13 +35,15 @@ async function restaurant_update(req, res, next) {
         const restaurantId = req.params.restaurantId
 
         let restaurant = await Restaurant.findById(restaurantId)
+        restaurant = Object.assign(restaurant, req.body)
 
         if (req.body.image) {
-            console.log(req.file)
-            restaurant.image = req.file.filename
+            let fileName = Date.now()
+            let filepath = base64Img.imgSync(req.body.image, path.join('/var/www', 'restaurant'), fileName)
+            restaurant.image = '/var/www/restaurant/' + fileName + path.extname(filepath)
         }
 
-        restaurant = Object.assign(restaurant, req.body)
+        await restaurant.save()
         
         sendJSONresponse(res, 200, restaurant)
 

@@ -36,12 +36,9 @@ app.use(helmet())
 
 app.use(passport.initialize())
 
-
-
-// app.use(express.static(path.join(__dirname, 'dist')))
 /* app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist/index.html'))
-}); */
+  res.sendFile(path.join(__dirname, 'images'))
+}) */
 
 app.use((err, req, res, next) => {
   if (err.message.match(/not found/)) {
@@ -61,6 +58,7 @@ function handleFatalError(err) {
 }
 
 /* app.use('/', express.static('./dist')) */
+/* app.use(express.static('/public')) */
 
 if (!module.parent) {
   process.on('uncaughtException', handleFatalError)
