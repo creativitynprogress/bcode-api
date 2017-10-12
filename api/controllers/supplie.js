@@ -35,7 +35,7 @@ async function supplie_list (req, res, next) {
     try {
         const restaurantId = req.params.restaurantId
 
-        let supplies = await Supplie.find({restaurantId: restaurantId})
+        let supplies = await Supplie.find({restaurantId: restaurantId}).populate('storage')
 
         sendJSONresponse(res, 200, supplies)
     } catch(e) {

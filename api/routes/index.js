@@ -32,6 +32,7 @@ const storage = multer.diskStorage({
   const table_controller = require('../controllers/table')
   const ticket_controller = require('../controllers/ticket')
   const order_controller = require('../controllers/order')
+  const provider_controller = require('../controllers/provider')
 
   // Middleware to require login/authentication
 const require_auth = passport.authenticate('jwt', {
@@ -55,10 +56,18 @@ const require_auth = passport.authenticate('jwt', {
       const table_routes = express.Router()
       const ticket_routes = express.Router()
       const order_routes = express.Router()
+      const provider_routes = express.Router()
 
       api_routes.use('/auth', auth_routes)
       auth_routes.post('/register', upload_file.single('image'), authenticathion_controller.register)
       auth_routes.post('/login', require_login, authenticathion_controller.login)
+
+      api_routes.use('/provider', provider_routes)
+      provider_routes.post('/', require_auth, provider_controller.provider_create)
+      provider_routes.get('/', require_auth, provider_controller.provider_list)
+      provider_routes.get('/:providerId', require_auth, provider_controller.provider_details)
+      provider_routes.put('/:providerId', require_auth, provider_controller.provider_update)
+      provider_routes.delete('/:providerId', require_auth, provider_controller.provider_delete)
 
       api_routes.use('/restaurant', restaurant_routes)
       restaurant_routes.post('/', require_auth, upload_file.single('image'), restaurant_controller.restaurant_create)
