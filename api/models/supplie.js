@@ -33,6 +33,9 @@ const supplieSchema = new Schema({
     restaurantId: {
         type: Schema.Types.ObjectId,
         ref: 'Restaurant'
+    },
+    value : {
+        type: Number
     }
 })
 

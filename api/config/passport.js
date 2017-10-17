@@ -44,7 +44,6 @@ const localLogin = new LocalStrategy(localOptions, function (email, password, do
       })
     } else {
       owner.comparePassword(password, function (err, isMatch) {
-        console.log(password, isMatch)
         if (err) {
           return done(err)
         }

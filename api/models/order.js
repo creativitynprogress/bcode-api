@@ -7,7 +7,7 @@ const orderSchema = new Schema({
     },
     state: {
         type: String,
-        enum: ['Pending', 'Process', 'Complete']
+        enum: ['Process', 'Complete']
     },
     time: {
         type: String,

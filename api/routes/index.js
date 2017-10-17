@@ -1,49 +1,34 @@
-const express = require('express')
-const passportService = require('../config/passport')
-const passport = require('passport')
-const multer = require('multer')
-const crypto = require('crypto')
-const path = require('path')
-const mime = require('mime')
-
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, './uploads/')
-    },
-    filename: (req, file, cb) => {
-      crypto.pseudoRandomBytes(16, (err, raw) => {
-        cb(null, raw.toString('hex') + Date.now() + '.' + mime.extension(file.mimetype))
+  module.exports = (app, io) => {
+      const express = require('express')
+      const passportService = require('../config/passport')
+      const passport = require('passport')
+      const multer = require('multer')
+      const crypto = require('crypto')
+      const path = require('path')
+      const mime = require('mime')
+    
+      const authenticathion_controller = require('../controllers/authentication')
+      const employee_controller = require('../controllers/employee')
+      const restaurant_controller = require('../controllers/restaurant')
+      const storage_controller = require('../controllers/storage')
+      const supplie_controller = require('../controllers/supplie')
+      const product_controller = require('../controllers/product')
+      const family_controller = require('../controllers/family')
+      const card_controller = require('../controllers/card')
+      const table_controller = require('../controllers/table')
+      const ticket_controller = require('../controllers/ticket')
+      const order_controller = require('../controllers/order')(io)
+      const provider_controller = require('../controllers/provider')
+      const purchase_controller = require('../controllers/purchase')
+    
+      // Middleware to require login/authentication
+    const require_auth = passport.authenticate('jwt', {
+        session: false
       })
-    }
-  })
-
-  const upload_file = multer({
-    storage: storage
-  })
-
-  const authenticathion_controller = require('../controllers/authentication')
-  const employee_controller = require('../controllers/employee')
-  const restaurant_controller = require('../controllers/restaurant')
-  const storage_controller = require('../controllers/storage')
-  const supplie_controller = require('../controllers/supplie')
-  const product_controller = require('../controllers/product')
-  const family_controller = require('../controllers/family')
-  const card_controller = require('../controllers/card')
-  const table_controller = require('../controllers/table')
-  const ticket_controller = require('../controllers/ticket')
-  const order_controller = require('../controllers/order')
-  const provider_controller = require('../controllers/provider')
-
-  // Middleware to require login/authentication
-const require_auth = passport.authenticate('jwt', {
-    session: false
-  })
-  
-  const require_login = passport.authenticate('local', {
-    session: false
-  })
-
-  module.exports = (app) => {
+      
+      const require_login = passport.authenticate('local', {
+        session: false
+      })
       const api_routes = express.Router()
       const auth_routes = express.Router()
       const restaurant_routes = express.Router()
@@ -57,9 +42,10 @@ const require_auth = passport.authenticate('jwt', {
       const ticket_routes = express.Router()
       const order_routes = express.Router()
       const provider_routes = express.Router()
+      const purchase_routes = express.Router()
 
       api_routes.use('/auth', auth_routes)
-      auth_routes.post('/register', upload_file.single('image'), authenticathion_controller.register)
+      auth_routes.post('/register', authenticathion_controller.register)
       auth_routes.post('/login', require_login, authenticathion_controller.login)
 
       api_routes.use('/provider', provider_routes)
@@ -70,14 +56,14 @@ const require_auth = passport.authenticate('jwt', {
       provider_routes.delete('/:providerId', require_auth, provider_controller.provider_delete)
 
       api_routes.use('/restaurant', restaurant_routes)
-      restaurant_routes.post('/', require_auth, upload_file.single('image'), restaurant_controller.restaurant_create)
+      restaurant_routes.post('/', require_auth, restaurant_controller.restaurant_create)
       restaurant_routes.get('/', require_auth, restaurant_controller.restaurant_list)
-      restaurant_routes.put('/:restaurantId', require_auth, upload_file.single('image'), restaurant_controller.restaurant_update)
+      restaurant_routes.put('/:restaurantId', require_auth, restaurant_controller.restaurant_update)
       restaurant_routes.get('/:restaurantId', require_auth, restaurant_controller.restaurant_details)
       restaurant_routes.delete('/:restaurantId', require_auth, restaurant_controller.restaurant_delete)
 
       restaurant_routes.use('/:restaurantId/employee', employee_routes)
-      employee_routes.post('/', require_auth, upload_file.single('image'), employee_controller.employee_create)
+      employee_routes.post('/', require_auth, employee_controller.employee_create)
       employee_routes.get('/', require_auth, employee_controller.employee_list)
       employee_routes.get('/:employeeId', require_auth, employee_controller.employee_details)
       employee_routes.delete('/:employeeId', require_auth, employee_controller.employee_delete)
@@ -95,8 +81,14 @@ const require_auth = passport.authenticate('jwt', {
       supplie_routes.put('/:supplieId', require_auth, supplie_controller.supplie_update)
       supplie_routes.delete('/:supplieId', require_auth, supplie_controller.supplie_delete)
 
+      restaurant_routes.use('/:restaurantId/purchase', purchase_routes)
+      purchase_routes.post('/',require_auth, purchase_controller.purchase_create)
+      purchase_routes.get('/', require_auth, purchase_controller.purchase_list)
+      purchase_routes.get('/:purchaseId', require_auth, purchase_controller.purchase_details)
+      purchase_routes.delete('/:purchaseId', require_auth, purchase_controller.purchase_delete)
+
       restaurant_routes.use('/:restaurantId/product', product_routes)
-      product_routes.post('/', require_auth, upload_file.single('image'), product_controller.product_create)
+      product_routes.post('/', require_auth, product_controller.product_create)
       product_routes.get('/', require_auth, product_controller.product_list)
       product_routes.get('/:productId', require_auth, product_controller.product_details)
       product_routes.put('/:productId', require_auth, product_controller.product_update)

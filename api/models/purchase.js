@@ -10,7 +10,7 @@ const purchaseSchema = ({
         type: Schema.Types.ObjectId,
         ref: 'Restaurant'
     },
-    cost: {
+    total: {
         type: Number
     },
     quantity: {

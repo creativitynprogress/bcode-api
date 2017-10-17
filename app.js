@@ -16,6 +16,11 @@ const http = require('http')
 const cors = require('cors')
 
 const server = http.createServer(app)
+const io = require('socket.io')(server)
+
+io.on('connection', (socket) => {
+  console.log(`Nueva conexión, id: ${socket.id}`)
+})
 
 mongoose.Promise = require('bluebird')
 mongoose.connect(config.database, {
@@ -68,5 +73,5 @@ if (!module.parent) {
     console.log(`${chalk.green('[bcode-api]')} server listening on port ${port}`)
   })
 
-  router(app)
+  router(app, io)
 }
