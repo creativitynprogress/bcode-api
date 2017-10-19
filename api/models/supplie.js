@@ -13,7 +13,8 @@ const supplieSchema = new Schema({
         ]
     },
     quantity: {
-        type: Number
+        type: Number,
+        default: 0
     },
     quantityAlert: {
         type: Number
@@ -30,12 +31,13 @@ const supplieSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Storage'
     },
-    restaurantId: {
+    restaurant: {
         type: Schema.Types.ObjectId,
         ref: 'Restaurant'
     },
     value : {
-        type: Number
+        type: Number,
+        default: 0
     }
 })
 
