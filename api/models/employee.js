@@ -22,13 +22,10 @@ const employeeSchema = new Schema({
     phone : {
         type: String
     },
-    imss: {
-        type: Boolean
-    },
     image: {
         type: String
     },
-    restaurantId: {
+    restaurant: {
         type: Schema.Types.ObjectId,
         ref: 'Restaurant',
         required: true

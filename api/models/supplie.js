@@ -23,10 +23,6 @@ const supplieSchema = new Schema({
         type: String,
         enum: ['g', 'kg', 'ton', 'lb', 'ml', 'l', 'ga', 'oz', 'pza']
     },
-    daysToBuy: {
-        type: String,
-        enum: ['N/A', 'Diario', 'Semanal', 'Quincenal', 'Mensual', 'Bimestral', 'Trimestral']
-    },
     storage: {
         type: Schema.Types.ObjectId,
         ref: 'Storage'

@@ -13,14 +13,13 @@ async function employee_create(req, res, next) {
 
         if (restaurant) {
             let employee = new Employee({
-                restaurantId: restaurantId,
+                restaurant: restaurantId,
                 role: req.body.role,
                 username: req.body.username,
                 password: req.body.password,
                 name: req.body.name,
                 lastname: req.body.lastname,
-                phone: req.body.phone,
-                imss: req.body.imss,
+                phone: req.body.phone
             })
 
             if (req.file) {
@@ -40,7 +39,7 @@ async function employee_list(req, res, next) {
     try {
         const restaurantId = req.params.restaurantId
 
-        let employees = await Employee.find({restaurantId: restaurantId})
+        let employees = await Employee.find({restaurant: restaurantId})
 
         sendJSONresponse(res, 200, employees)
     } catch(e) {

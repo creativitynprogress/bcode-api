@@ -20,6 +20,7 @@
       const order_controller = require('../controllers/order')(io)
       const provider_controller = require('../controllers/provider')
       const purchase_controller = require('../controllers/purchase')
+      const purchase_order_controller = require('../controllers/purchase_order')
     
       // Middleware to require login/authentication
     const require_auth = passport.authenticate('jwt', {
@@ -43,6 +44,7 @@
       const order_routes = express.Router({ mergeParams : true })
       const provider_routes = express.Router({ mergeParams : true })
       const purchase_routes = express.Router({ mergeParams : true })
+      const purchase_order_routes = express.Router({ mergeParams: true})
 
       api_routes.use('/auth', auth_routes)
       auth_routes.post('/register', authenticathion_controller.register)
@@ -80,6 +82,12 @@
       supplie_routes.get('/:supplieId', require_auth, supplie_controller.supplie_details)
       supplie_routes.put('/:supplieId', require_auth, supplie_controller.supplie_update)
       supplie_routes.delete('/:supplieId', require_auth, supplie_controller.supplie_delete)
+
+      restaurant_routes.use('/:restaurantId/purchaseOrder', purchase_order_routes)
+      purchase_order_routes.post('/', require_auth, purchase_order_controller.purchase_order_create)
+      purchase_order_routes.get('/', require_auth, purchase_order_controller.purchase_order_list)
+      purchase_order_routes.delete('/:purchaseOrderId', require_auth, purchase_order_controller.purchase_order_delete)
+      purchase_order_routes.put('/:purchaseOrderId', require_auth, purchase_order_controller.purchase_order_update)
 
       restaurant_routes.use('/:restaurantId/purchase', purchase_routes)
       purchase_routes.post('/',require_auth, purchase_controller.purchase_create)

@@ -8,7 +8,8 @@ async function storage_create(req, res, next) {
         const restaurantId = req.params.restaurantId
 
         let storage = new Storage(req.body)
-
+        storage.restaurant = restaurantId
+        
         storage = await storage.save()
 
         sendJSONresponse(res, 201, storage)
@@ -21,7 +22,7 @@ async function storage_list(req, res, next) {
     try {
         const restaurantId = req.params.restaurantId
 
-        let storages = await Storage.find({restaurantId: restaurantId})
+        let storages = await Storage.find({restaurant: restaurantId})
 
         sendJSONresponse(res, 200, storages)
     } catch(e) {

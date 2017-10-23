@@ -6,7 +6,7 @@ const storageSchema = new Schema({
         type: String,
         required: true
     },
-    restaurantId: {
+    restaurant: {
         type: Schema.Types.ObjectId,
         ref: 'Restaurant'
     }
