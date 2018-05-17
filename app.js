@@ -36,6 +36,7 @@ app.use(bodyParser.urlencoded({
 }))
 app.use(cookieParser())
 app.use(cors())
+
 app.use(logger('dev'))
 app.use(helmet())
 

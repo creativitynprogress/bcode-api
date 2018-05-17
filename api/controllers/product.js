@@ -15,8 +15,8 @@ async function product_create(req, res, next) {
             salePrice: req.body.salePrice,
             iva: req.body.iva,
             time: req.body.time,
-            familyId: req.body.familyId,
-            restaurantId: restaurantId
+            family: req.body.family,
+            restaurant: restaurantID
         })
 
         if (req.body.ingredients) {

@@ -42,11 +42,11 @@ const productSchema = new Schema({
     time: {
         type: Number
     },
-    familyId: {
+    family: {
         type: Schema.Types.ObjectId,
         ref: 'Family'
     },
-    restaurantId: {
+    restaurant: {
         type: Schema.Types.ObjectId,
         ref: 'Restaurant'
     },

@@ -21,7 +21,6 @@ async function supplie_create (req, res, next) {
             supplie.storage = null
         }
 
-        console.log(supplie)
         supplie = await supplie.save()
 
         sendJSONresponse(res, 201, supplie)
@@ -49,7 +48,6 @@ async function supplie_list (req, res, next) {
         let supplies = await Supplie.find({restaurant: restaurantId}).populate('storage')
         supplies = supplies.map(s => {
             s.storage = s.storage && s.storage.name
-            console.log(s)
             return s
         })
 
